@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\FinancialController;
 use App\Http\Controllers\Teacher\TeacherPanelController;
 use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\Student\AdmissionController;
+use App\Http\Controllers\Student\StudentPanelController;
 
 
 // 1. The Welcoming Root Route
@@ -28,7 +29,7 @@ Route::view('/about', 'about')->name('about');
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified', 'otp.verified']) // Yahan se 'check.approval' hata diya hai
     ->name('dashboard');
-    
+
 // 3. Normal Authenticated Routes (Profile & OTP)
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -40,13 +41,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/verify-otp', [OtpController::class, 'verify'])->name('otp.verify.post');
 
 
-   Route::get('/admission/apply', [AdmissionController::class, 'create'])->name('applicant.form');
+    Route::get('/admission/apply', [AdmissionController::class, 'create'])->name('applicant.form');
     Route::post('/admission/apply', [AdmissionController::class, 'store'])->name('applicant.store');
 });
 
 // STUDENT ROUTES GROUP
 Route::middleware(['auth'])->prefix('student')->name('student.')->group(function () {
+    
+    // 1. View Assignments Page
     Route::get('/assignments', [App\Http\Controllers\Student\StudentPanelController::class, 'myAssignments'])->name('assignments');
+    
+    // 2. Submit Assignment Route (FIXED)
+    Route::post('/assignments/{assignmentId}/submit', [App\Http\Controllers\Student\StudentPanelController::class, 'submitAssignment'])->name('assignments.submit');
+
 });
 
 // 4. Admin Only Routes (Step 8 - Student Approvals)
@@ -88,7 +95,8 @@ Route::middleware(['auth'])->prefix('teacher')->name('teacher.')->group(function
     Route::get('/assignments', [TeacherPanelController::class, 'assignments'])->name('assignments');
     Route::post('/assignments', [TeacherPanelController::class, 'storeAssignment'])->name('assignments.store');
 
-// TEACHER ROUTES GROUP ke andar aakhir mein ye line aise likhein:
-Route::get('/classes/{classId}/export', [TeacherPanelController::class, 'exportRoster'])->name('classes.export');});
+    // TEACHER ROUTES GROUP ke andar aakhir mein ye line aise likhein:
+    Route::get('/classes/{classId}/export', [TeacherPanelController::class, 'exportRoster'])->name('classes.export');
+});
 // 5. Breeze Default Auth Routes (Login, Register, Passwords etc)
 require __DIR__ . '/auth.php';

@@ -20,7 +20,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12 bg-slate-50 min-h-screen relative overflow-hidden">
+    <div class="py-12 bg-slate-50 min-h-screen relative overflow-hidden" x-data="{ submitModal: null }">
         
         <div class="absolute inset-0 opacity-40 pointer-events-none">
             <div class="absolute top-0 right-0 w-96 h-96 bg-emerald-100 rounded-full blur-3xl -translate-y-48 translate-x-48"></div>
@@ -29,6 +29,20 @@
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 relative z-10">
             
+            @if(session('success'))
+                <div class="bg-emerald-100 border border-emerald-200 text-emerald-700 px-6 py-4 rounded-2xl mb-8 font-bold flex items-center gap-3 shadow-sm animate-slide-up">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @error('submission_file')
+                <div class="bg-rose-100 border border-rose-200 text-rose-700 px-6 py-4 rounded-2xl mb-8 font-bold flex items-center gap-3 shadow-sm animate-slide-up">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    {{ $message }}
+                </div>
+            @enderror
+
             <div class="mb-8 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center">
                 <div>
                     <h3 class="font-black text-xl text-slate-800">Pending Tasks</h3>
@@ -91,11 +105,60 @@
                                     {{ $assignment->due_date->format('d M Y, h:i A') }}
                                 </span>
                             </div>
-                            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all active:scale-95 flex items-center justify-center gap-2 uppercase tracking-widest text-xs">
+                            
+                            <button type="button" @click="submitModal = {{ $assignment->id }}" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all active:scale-95 flex items-center justify-center gap-2 uppercase tracking-widest text-xs">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                 Submit Assignment
                             </button>
                         </div>
+
+                        <div x-show="submitModal === {{ $assignment->id }}" style="display: none;" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                            <div x-show="submitModal === {{ $assignment->id }}" x-transition.opacity.duration.300ms @click="submitModal = null" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm cursor-pointer"></div>
+                            
+                            <div x-show="submitModal === {{ $assignment->id }}" 
+                                 x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                 class="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-md p-8 z-20"
+                                 x-data="{ fileName: '' }"> <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6">
+                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                </div>
+                                
+                                <h3 class="text-2xl font-black text-blue-950 mb-1">Submit Your Work</h3>
+                                <p class="text-slate-500 font-medium mb-8 text-sm">Uploading for: <strong class="text-slate-700">{{ $assignment->title }}</strong></p>
+
+                                <form action="{{ route('student.assignments.submit', $assignment->id) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    
+                                    <div class="mb-8">
+                                        <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Select File</label>
+                                        
+                                        <div class="relative border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:border-blue-500 hover:bg-blue-50/50 transition-colors group"
+                                             :class="{'border-blue-500 bg-blue-50/50': fileName !== ''}">
+                                            
+                                            <input type="file" name="submission_file" required accept=".pdf,.doc,.docx,.jpg,.png,.zip"
+                                                   @change="fileName = $event.target.files[0].name"
+                                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                            
+                                            <div class="text-slate-500 group-hover:text-blue-600 transition-colors" :class="{'text-blue-600': fileName !== ''}">
+                                                <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                                
+                                                <p class="font-bold text-sm" x-text="fileName === '' ? 'Click to browse or drag file here' : fileName"></p>
+                                                <p class="text-[10px] uppercase tracking-widest mt-1 opacity-70">Max size: 5MB</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex gap-3">
+                                        <button type="button" @click="submitModal = null" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3.5 rounded-xl transition-colors">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all active:scale-95 flex justify-center items-center gap-2">
+                                            Submit Work
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                 @empty
                     <div class="col-span-full py-24 text-center bg-white rounded-[2rem] border border-slate-200 shadow-sm">

@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Assignment;
 use App\Models\Enrollment;
+use App\Models\AssignmentSubmission;
+use App\Models\User;
+use App\Http\Requests\StoreAssignmentSubmissionRequest;
+use App\Services\AssignmentService;
 
 class StudentPanelController extends Controller
 {
@@ -22,4 +26,17 @@ class StudentPanelController extends Controller
 
         return view('student.assignments', compact('assignments'));
     }
-}
+     
+// ==================================================
+    // STUDENT ASSIGNMENT SUBMISSION (ENTERPRISE LEVEL)
+    // ==================================================
+    public function submitAssignment(StoreAssignmentSubmissionRequest $request, $assignmentId, AssignmentService $assignmentService)
+    {
+        // 1. Bouncer (Form Request) ne apna kaam kar diya.
+        // 2. Manager (Controller) ne Chef (Service) ko kaam de diya.
+        $assignmentService->handleSubmission($request, $assignmentId);
+
+        // 3. Manager ne customer ko khana serve kar diya (Success message)
+        return back()->with('success', 'Assignment submitted successfully! Great job.');
+    }
+    }
