@@ -1,59 +1,89 @@
-<p align="center">
-  <div style="background-color: #1e3a8a; padding: 20px; border-radius: 15px; text-align: center;">
-    <h1 style="color: #fbbf24; font-size: 3em; margin: 0;">EDU<span style="color: white;">core</span></h1>
-    <p style="color: #bfdbfe; font-size: 1.2em;">Next-Generation School Management System</p>
-  </div>
-</p>
-
-<p align="center">
-    <img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel">
-    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
-    <img src="https://img.shields.io/badge/Alpine.js-8BC0D0?style=for-the-badge&logo=alpine.js&logoColor=white" alt="Alpine JS">
-    <img src="https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
-</p>
-
-## 🚀 About EDUcore
-
-**EDUcore** is a premium, enterprise-level School Management System built to bridge the gap between administrators, teachers, and students. With a heavy focus on a frictionless User Experience (UX) and modern UI design (Glassmorphism), EDUcore makes school administration paperless, efficient, and visually stunning.
-
-Architected and developed by **Huzaifa**, this SaaS application eliminates administrative bottlenecks so educators can focus on what truly matters: teaching.
+<div align="center">
+  <img src="https://ui-avatars.com/api/?name=EDU+core&background=1e3a8a&color=fbbf24&size=150&font-size=0.33&rounded=true&bold=true" alt="EDUcore Logo" width="120">
+  <br>
+  <h1><b>EDUcore • School Management System</b></h1>
+  <p><b>A Next-Generation, Enterprise-Grade SaaS for Educational Institutions.</b></p>
+  
+  <p>
+    <a href="#"><img src="https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat-square&logo=php&logoColor=white" alt="PHP Version"></a>
+    <a href="#"><img src="https://img.shields.io/badge/Laravel-11.x-FF2D20?style=flat-square&logo=laravel&logoColor=white" alt="Laravel Version"></a>
+    <a href="#"><img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS"></a>
+    <a href="#"><img src="https://img.shields.io/badge/Alpine.js-8BC0D0?style=flat-square&logo=alpine.js&logoColor=white" alt="Alpine JS"></a>
+    <a href="#"><img src="https://img.shields.io/badge/MySQL-00000F?style=flat-square&logo=mysql&logoColor=white" alt="MySQL"></a>
+    <a href="#"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License"></a>
+  </p>
+</div>
 
 ---
 
-## ✨ Key Features
+## 📖 Overview
 
-### 🔐 Role-Based Access Control (RBAC)
-- **Admin Portal:** Master control room for admissions, teacher allocations, and overall school statistics.
-- **Teacher Portal:** Manage students, mark attendance, grade exams, and publish dynamic assignments.
-- **Student Portal:** Track pending/overdue assignments, check attendance, and view grades securely.
+**EDUcore** is a robust, highly scalable, and visually stunning School Management System. Designed with a frictionless User Experience (UX) and modern **Glassmorphism** UI, it bridges the communication and administrative gap between School Admins, Teachers, and Students.
 
-### 🎨 Premium UI / UX
-- **Glassmorphism Design:** Beautiful translucent navbars, floating background particles, and smooth layout transitions.
-- **Interactive Modals:** "No-refresh" animated popups for CSV Export Previews, Event Details, and Program Information using Alpine.js.
-- **Dynamic Active Navigation:** Smart routing that highlights active pages natively.
+By automating routine tasks like attendance, assignment grading, and fee tracking, EDUcore empowers educators to focus entirely on student growth.
 
-### 📚 Academic Management
-- **Assignments Engine:** Teachers can create tasks with due dates; students see color-coded cards (Overdue in Red, Pending in Green).
-- **Live Notice Board:** Interactive event announcements with visual modals.
-- **One-Click Export:** Securely stream and download student rosters in CSV format.
-
-### 🌍 Public Facing Pages
-- **SEO-Optimized Landing Pages:** Highly animated `Home`, `About Us`, and `Contact Us` pages designed to drive new student admissions.
+> **Note:** This project is built using the **MVC (Model-View-Controller)** architecture along with the **Repository Pattern** for clean, maintainable, and testable code.
 
 ---
 
-## 🛠️ Tech Stack
-
-- **Backend:** Laravel 11.x (PHP 8.2+)
-- **Frontend:** Blade Templates, Tailwind CSS (Custom customized config), Alpine.js
-- **Database:** MySQL / MariaDB
-- **Animations:** AOS (Animate on Scroll), Custom CSS Keyframes
+## 📑 Table of Contents
+- [Screenshots](#-screenshots)
+- [Core Modules & Features](#-core-modules--features)
+- [System Architecture](#-system-architecture)
+- [Installation & Setup](#-installation--setup)
+- [Security Features](#-security-features)
+- [Roadmap](#-roadmap)
+- [License](#-license)
 
 ---
 
-## 💻 Installation & Setup
+## 📸 Screenshots
+*(Note to Developer: Replace these placeholder links with actual screenshots of your project)*
 
-Follow these steps to get a local copy of EDUcore up and running on your machine.
+| Public Landing Page | Student Dashboard | Teacher Assignments |
+| :---: | :---: | :---: |
+| <img src="https://placehold.co/600x400/1e293b/ffffff?text=Landing+Page" width="250"> | <img src="https://placehold.co/600x400/1e293b/ffffff?text=Student+Dashboard" width="250"> | <img src="https://placehold.co/600x400/1e293b/ffffff?text=Teacher+Panel" width="250"> |
+
+---
+
+## ✨ Core Modules & Features
+
+### 🛡️ 1. Multi-Tier Role-Based Access Control (RBAC)
+- **Super Admin:** Complete overview of school revenue, active students, staff management, and system settings.
+- **Teacher Portal:** Custom interface for managing classes, marking attendance, exporting dynamic student rosters (CSV), and publishing assignments.
+- **Student/Parent Portal:** Personalized dashboard highlighting pending/overdue assignments, attendance records, and fee status.
+
+### 🎨 2. Premium UI / UX Engineering
+- **Glassmorphism Aesthetics:** Translucent navigation bars and deeply integrated Tailwind gradients.
+- **Asynchronous Modals:** "No-refresh" animated popups powered by Alpine.js for Notice Boards, Data Previews, and Action Confirmations.
+- **Dynamic Active Routing:** Smart navigation components that independently highlight active routes.
+
+### 📚 3. Academic Engine
+- **Assignment Management:** Teachers can distribute assignments with precise due dates. Students receive visual indicators (Red = Overdue, Green = Pending).
+- **Roster Export Engine:** Utilizing Laravel's `streamDownload` for memory-efficient, real-time CSV extraction of student data.
+
+---
+
+## 🏗️ System Architecture
+
+- **Framework:** Laravel 11.x
+- **Frontend Styling:** Tailwind CSS (Custom compiled via Vite)
+- **Frontend Interactions:** Alpine.js (Lightweight reactive components)
+- **Design Patterns:** MVC, Repository Design Pattern, Service Classes.
+- **Middleware:** Custom `PreventBackHistory` for secure session handling and custom role-verification middleware.
+
+---
+
+## ⚙️ Installation & Setup
+
+### Prerequisites
+Make sure your server meets the following requirements:
+- PHP >= 8.2
+- Composer >= 2.0
+- Node.js & NPM
+- MySQL >= 8.0 or MariaDB
+
+### Step-by-Step Guide
 
 **1. Clone the repository**
 ```bash
