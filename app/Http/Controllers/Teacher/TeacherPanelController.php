@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SchoolClass;
 use App\Models\Assignment;
+use App\Http\Requests\StoreAssignmentRequest;
+use App\Services\TeacherService;
 
 class TeacherPanelController extends Controller
 {
@@ -93,26 +95,15 @@ class TeacherPanelController extends Controller
     // ==========================================
     // 4. ASSIGNMENT SAVE KARNE KA FUNCTION
     // ==========================================
-    public function storeAssignment(Request $request)
+ public function storeAssignment(StoreAssignmentRequest $request, TeacherService $teacherService)
     {
-        $request->validate([
-            'title'           => 'required|string|max:255',
-            'school_class_id' => 'required|exists:school_classes,id',
-            'description'     => 'nullable|string',
-            'total_marks'     => 'required|integer|min:1',
-            'due_date'        => 'required|date|after_or_equal:today',
-        ]);
+        // 1. Bouncer (Form Request) ne validation pass kar di hai.
+        
+        // 2. Manager ne Chef (Service) ko validated data de diya kaam karne ke liye.
+        $teacherService->createAssignment($request->validated());
 
-        Assignment::create([
-            'teacher_id'      => Auth::id(),
-            'school_class_id' => $request->school_class_id,
-            'title'           => $request->title,
-            'description'     => $request->description,
-            'total_marks'     => $request->total_marks,
-            'due_date'        => $request->due_date,
-        ]);
-
-        return redirect()->route('teacher.assignments')->with('success', 'Assignment created successfully!');
+        // 3. Manager ne wapis response bhej diya.
+        return redirect()->back()->with('success', 'Assignment published successfully!');
     }
 
     public function markAttendance() { return "Coming Soon"; }

@@ -11,6 +11,7 @@ use App\Models\AssignmentSubmission;
 use App\Models\User;
 use App\Http\Requests\StoreAssignmentSubmissionRequest;
 use App\Services\AssignmentService;
+use App\Interfaces\NotificationInterface;
 
 class StudentPanelController extends Controller
 {
@@ -30,13 +31,16 @@ class StudentPanelController extends Controller
 // ==================================================
     // STUDENT ASSIGNMENT SUBMISSION (ENTERPRISE LEVEL)
     // ==================================================
-    public function submitAssignment(StoreAssignmentSubmissionRequest $request, $assignmentId, AssignmentService $assignmentService)
-    {
-        // 1. Bouncer (Form Request) ne apna kaam kar diya.
-        // 2. Manager (Controller) ne Chef (Service) ko kaam de diya.
-        $assignmentService->handleSubmission($request, $assignmentId);
+   public function submitAssignment(StoreAssignmentSubmissionRequest $request, $assignmentId, AssignmentService $assignmentService, NotificationInterface $notifier)
+{
+    // 1. Chef ne file upload ka kaam kar diya
+    $assignmentService->handleSubmission($request, $assignmentId);
 
-        // 3. Manager ne customer ko khana serve kar diya (Success message)
-        return back()->with('success', 'Assignment submitted successfully! Great job.');
-    }
+    $assignment = Assignment::findOrFail($assignmentId);
+
+    // 2. Notification bhej di! (Controller ko nahi pata ke SMS gaya, Email gayi ya System Notif gaya)
+    $notifier->send($assignment->teacher_id, "A student just submitted the assignment: " . $assignment->title);
+
+    return back()->with('success', 'Assignment submitted successfully!');
+}
     }

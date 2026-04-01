@@ -14,6 +14,13 @@ use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\Student\AdmissionController;
 use App\Http\Controllers\Student\StudentPanelController;
 
+// ==========================================
+// 1. TEST ROUTES (404, 500, 403)
+// ==========================================
+Route::get('/test-404', function () { abort(404); });
+Route::get('/test-500', function () { abort(500); });
+Route::get('/test-403', function () { abort(403); });
+
 
 // 1. The Welcoming Root Route
 Route::get('/', function () {
