@@ -19,14 +19,14 @@ class StoreAssignmentRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+  public function rules(): array
     {
         return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'due_date' => 'required|date|after:today',
             'total_marks' => 'required|integer|min:1',
-            'schol_class_id' => 'required|exsists:school_classes,id',
+            'school_class_id' => 'required|exists:school_classes,id', 
         ];
     }
 

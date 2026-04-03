@@ -14,6 +14,8 @@ use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\Student\AdmissionController;
 use App\Http\Controllers\Student\StudentPanelController;
 
+
+
 // ==========================================
 // 1. TEST ROUTES (404, 500, 403)
 // ==========================================
@@ -51,6 +53,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/admission/apply', [AdmissionController::class, 'create'])->name('applicant.form');
     Route::post('/admission/apply', [AdmissionController::class, 'store'])->name('applicant.store');
 });
+// 4. Academics Page Route (Simple Static View)
+Route::get('/academics', [AcademicController::class, 'index'])->name('academics.index');
 
 // STUDENT ROUTES GROUP
 Route::middleware(['auth'])->prefix('student')->name('student.')->group(function () {
@@ -67,6 +71,7 @@ Route::middleware(['auth'])->prefix('student')->name('student.')->group(function
 Route::middleware(['auth', 'verified', 'check.approval', 'otp.verified', 'role:Admin'])->group(function () {
     Route::patch('/admin/students/{student}/approve', [StudentApprovalController::class, 'approve'])->name('admin.students.approve');
     Route::delete('/admin/students/{student}/reject', [StudentApprovalController::class, 'reject'])->name('admin.students.reject');
+    Route::post('/student/profile/picture', [\App\Http\Controllers\Student\StudentPanelController::class, 'updateProfilePicture'])->name('student.profile.picture');
     // NAYE ACADEMIC ROUTES YAHAN ADD KAREIN:
     Route::get('/admin/allocations', [AllocationController::class, 'index'])->name('admin.allocations.index');
     Route::post('/admin/allocations', [AllocationController::class, 'store'])->name('admin.allocations.store');
@@ -102,8 +107,17 @@ Route::middleware(['auth'])->prefix('teacher')->name('teacher.')->group(function
     Route::get('/assignments', [TeacherPanelController::class, 'assignments'])->name('assignments');
     Route::post('/assignments', [TeacherPanelController::class, 'storeAssignment'])->name('assignments.store');
 
+    // Download Submission File (Teacher Routes Group ke andar)
+Route::get('/submissions/{id}/download', [\App\Http\Controllers\Teacher\TeacherPanelController::class, 'downloadSubmission'])->name('submissions.download');
+
     // TEACHER ROUTES GROUP ke andar aakhir mein ye line aise likhein:
     Route::get('/classes/{classId}/export', [TeacherPanelController::class, 'exportRoster'])->name('classes.export');
+
+// View Student Submissions for a specific Assignment (Prefix aur Name group se khud lag jayega)
+Route::get('/assignments/{id}/submissions', [\App\Http\Controllers\Teacher\TeacherPanelController::class, 'viewSubmissions'])->name('assignments.submissions');
+
+// Delete an Assignment
+Route::delete('/assignments/{id}/delete', [\App\Http\Controllers\Teacher\TeacherPanelController::class, 'destroyAssignment'])->name('assignments.destroy');
 });
 // 5. Breeze Default Auth Routes (Login, Register, Passwords etc)
 require __DIR__ . '/auth.php';

@@ -34,4 +34,9 @@ class Assignment extends Model
     {
         return $this->belongsTo(User::class, 'teacher_id');
     }
+    public function submissions()
+    {
+        // Yeh line Laravel ko batati hai ke ek assignment ki bohot saari submissions hoti hain
+        return $this->hasMany(AssignmentSubmission::class, 'assignment_id');
+    }
 }

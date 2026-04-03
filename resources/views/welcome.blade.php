@@ -621,7 +621,7 @@
                         <span
                             class="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 rounded-full transform scale-x-100 transition-transform"></span>
                     </a>
-                    <a href="#"
+                    <a href="{{ route('academics.index') }}"
                         class="relative px-4 py-2 text-sm font-bold text-slate-500 hover:text-blue-600 rounded-lg overflow-hidden group transition-colors">
                         <span class="relative z-10">Academics</span>
                         <span
